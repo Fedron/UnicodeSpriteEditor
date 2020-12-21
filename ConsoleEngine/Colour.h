@@ -1,6 +1,9 @@
 #pragma once
 
 namespace ce {
+	/**
+	* Contains short values for the colours supported by the Windows console
+	*/
 	enum class Colour
 	{
 		FG_BLACK = 0x0000,

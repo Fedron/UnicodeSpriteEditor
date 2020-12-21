@@ -44,6 +44,17 @@ namespace ce {
 		}
 	}
 
+	void Console::Draw(int x, int y, std::wstring text, Colour colour)
+	{
+		assert(x >= 0 && x < mWidth&& y >= 0 && y <= mHeight);
+
+		if (x >= 0 && x < mWidth && y >= 0 && y <= mHeight) {
+			for (int i = 0; i < text.size(); i++) {
+				Draw(x + i, y, text[i], colour);
+			}
+		}
+	}
+
 	void Console::Render()
 	{
 		SetConsoleTitle(mWindowTitle.c_str());

@@ -14,12 +14,16 @@
 
 #include "Colour.h"
 
-/*
-	The console class handles all the drawing to the console
-	Only one will ever be present in the whole program and can
-	be accessed via the GetInstance() method
-*/
 namespace ce {
+	/**
+	* The Console class handles all the drawing to the console and rendering.
+	* It does not handle any game loops or timing, that has to be taken care of
+	* from a different class, this is purpely for drawing to the console.
+	* 
+	* Console is a singleton and as a result only one object will exist for the
+	* lifetime of the application. If you need to "create a new instance" of Console
+	* you can change the configuration of the existing console via the Create() method
+	*/
 	class Console
 	{
 	public:
@@ -65,7 +69,8 @@ namespace ce {
 		}
 
 		/**
-		* Draws a unicode character to the screen buffer of the specified colour
+		* Draws a unicode character to the screen buffer at the specified position
+		* and with the specified colour
 		*
 		* @param x The x coordinate (or column) in which to draw
 		* @param y The y coordinate (or row) in which to draw
@@ -76,8 +81,21 @@ namespace ce {
 			Draw(x, y, value, Colour::FG_WHITE);
 		}
 		void Draw(int x, int y, short value, Colour colour);
-		void Draw(int x, int y, std::wstring text);
+
+		/**
+		* Draws text to the screen buffer at the specified position, with the
+		* text going right from the specified position
+		* 
+		* @param x The x coordinate (or column) where the text starts
+		* @param y The y coordinate (or row) where the text states
+		* @param text The string that will be drawn
+		* @param colour The foreground colour of the whole string
+		*/
+		void Draw(int x, int y, std::wstring text) {
+			Draw(x, y, text, Colour::FG_WHITE);
+		}
 		void Draw(int x, int y, std::wstring text, Colour colour);
+		// TODO: Add another signature that supports text justify relative to the x and y
 
 		/**
 		* Renders the screen buffer to the console and updates the console window title

@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Console.cpp" />

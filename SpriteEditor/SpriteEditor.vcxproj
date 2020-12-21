@@ -144,11 +144,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpriteEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleEngine\ConsoleEngine.vcxproj">
       <Project>{b7c86b0c-287a-43e1-89f0-81be7dab50ba}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpriteEditor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
