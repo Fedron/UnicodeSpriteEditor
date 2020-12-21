@@ -34,21 +34,53 @@ namespace ce {
 			sizeof(CHAR_INFO) * instance.mWidth * instance.mHeight);
 	}
 
-	void Console::Draw(int x, int y, short value, Colour colour)
+	void Console::Draw(int x, int y, short glyph, Colour colour)
 	{
-		assert(x >= 0 && x < mWidth&& y >= 0 && y <= mHeight);
+		Console& console = rGetInstance();
+		assert(x >= 0 && x < console.mWidth && y >= 0 && y <= console.mHeight);
 
-		if (x >= 0 && x < mWidth && y >= 0 && y <= mHeight) {
-			mScreenBuf[y * mWidth + x].Char.UnicodeChar = value;
-			mScreenBuf[y * mWidth + x].Attributes = static_cast<short>(colour);
+		if (x >= 0 && x < console.mWidth && y >= 0 && y <= console.mHeight) {
+			console.mScreenBuf[y * console.mWidth + x].
+				Char.UnicodeChar = glyph;
+			console.mScreenBuf[y * console.mWidth + x].
+				Attributes = static_cast<short>(colour);
 		}
 	}
 
-	void Console::Draw(int x, int y, std::wstring text, Colour colour)
+	void Console::DrawLine(int x1, int y1, int x2, int y2, short glyph, Colour colour)
 	{
-		assert(x >= 0 && x < mWidth&& y >= 0 && y <= mHeight);
+		if (x2 - x1 == 0) {
+			if (y2 < y1) {
+				int temp = y1;
+				y1 = y2;
+				y2 = temp;
+			}
 
-		if (x >= 0 && x < mWidth && y >= 0 && y <= mHeight) {
+			for (int y = y1; y <= y2; y++) {
+				Draw(x1, y, glyph, colour);
+			}
+		}
+		else {
+			int gradient = (y2 - y1) / (x2 - x1);
+
+			if (x2 < x1) {
+				int temp = x1;
+				x1 = x2;
+				x2 = temp;
+			}
+
+			for (int x = x1; x <= x2; x++) {
+				Draw(x, gradient * x, glyph, colour);
+			}
+		}
+	}
+
+	void Console::DrawString(int x, int y, std::wstring text, Colour colour)
+	{
+		Console& console = rGetInstance();
+		assert(x >= 0 && x < console.mWidth && y >= 0 && y <= console.mHeight);
+
+		if (x >= 0 && x < console.mWidth && y >= 0 && y <= console.mHeight) {
 			for (int i = 0; i < text.size(); i++) {
 				Draw(x + i, y, text[i], colour);
 			}

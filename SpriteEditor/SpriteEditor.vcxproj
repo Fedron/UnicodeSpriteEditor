@@ -144,7 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SpriteEditor.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="SpriteEditorScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleEngine\ConsoleEngine.vcxproj">
@@ -152,7 +153,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SpriteEditor.h" />
+    <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="SpriteEditorScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stack>
 #include <stdio.h>
 #include <assert.h>
 
@@ -40,9 +41,9 @@ namespace ce {
 		static void Create(std::wstring windowTitle, int width, int height);
 
 		/**
-		* Returns a references to active instance of Console
+		* Returns a reference to the instance of Console
 		* 
-		* @return active instance of Console
+		* @return reference to the instance of Console
 		*/
 		static Console& rGetInstance()
 		{
@@ -77,10 +78,26 @@ namespace ce {
 		* @param value The unicode character to draw
 		* @param colour The foreground colour of the unicode character
 		*/
-		void Draw(int x, int y, short value) {
-			Draw(x, y, value, Colour::FG_WHITE);
+		static void Draw(int x, int y, short glyph) {
+			Draw(x, y, glyph, Colour::WHITE);
 		}
-		void Draw(int x, int y, short value, Colour colour);
+		static void Draw(int x, int y, short glyph, Colour colour);
+
+		/**
+		* Draws a line between two points consisting of only the glpyh
+		* specified and one glpyh thick
+		* 
+		* @param x1 The starting x coordinate (or column) of the line
+		* @param y1 The starting y coordinate (or row) of the line
+		* @param x2 The ending x coordinate (or column) of the line
+		* @param y2 The ending y coordinate (or row) of the line
+		* @param glyph The glyph to use
+		* @param colour The colour of the line
+		*/
+		static void DrawLine(int x1, int y1, int x2, int y2, short glyph) {
+			DrawLine(x1, y1, x2, y2, glyph, Colour::WHITE);
+		}
+		static void DrawLine(int x1, int y1, int x2, int y2, short glyph, Colour colour);
 
 		/**
 		* Draws text to the screen buffer at the specified position, with the
@@ -91,10 +108,10 @@ namespace ce {
 		* @param text The string that will be drawn
 		* @param colour The foreground colour of the whole string
 		*/
-		void Draw(int x, int y, std::wstring text) {
-			Draw(x, y, text, Colour::FG_WHITE);
+		static void DrawString(int x, int y, std::wstring text) {
+			DrawString(x, y, text, Colour::WHITE);
 		}
-		void Draw(int x, int y, std::wstring text, Colour colour);
+		static void DrawString(int x, int y, std::wstring text, Colour colour);
 		// TODO: Add another signature that supports text justify relative to the x and y
 
 		/**

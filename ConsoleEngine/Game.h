@@ -2,10 +2,11 @@
 #pragma warning( disable : 4244 )
 #include <chrono>
 #include "Console.h"
+#include "Scene.h"
 
 namespace ce {
 	/**
-	* Abstract class responsible for the game loop
+	* Responsible for the game loop
 	*/
 	class Game
 	{
@@ -16,6 +17,16 @@ namespace ce {
 			mDeltaTime = 0.0f;
 			mCurrentTime = std::chrono::system_clock::now();
 			mLastTime = mCurrentTime;
+		}
+		~Game() {
+			for (int i = 0; i < mScenes.size(); i++) {
+				delete mScenes.top();
+				mScenes.pop();
+			}
+		}
+
+		void AddScene(Scene* scene) {
+			mScenes.push(scene);
 		}
 
 		/**
@@ -28,32 +39,35 @@ namespace ce {
 		*/
 		void Run() {
 			while (mRunning) {
+				if (mScenes.empty()) {
+					mRunning = false;
+					break;
+				}
+
 				// Calculate delta time
 				mCurrentTime = std::chrono::system_clock::now();
 				mDeltaTime = (mCurrentTime - mLastTime).count();
 				mLastTime = mCurrentTime;
 
-				// TODO: Check for quit conditions e.g Espace key
-				CheckInputs();
-
-				Update();
-				Draw();
+				mScenes.top()->CheckInputs();
+				mScenes.top()->Update();
+				mScenes.top()->Draw();
 
 				ce::Console::rGetInstance().Render();
 			}
 		}
 
-	protected:
-		virtual void CheckInputs() = 0;
-		virtual void Update() = 0;
-		virtual void Draw() = 0;
-
-	protected:
-		bool mRunning;
-		float mDeltaTime;
+		std::stack<Scene*>& rGetScenes() {
+			return mScenes;
+		}
 
 	private:
+		bool mRunning;
+
 		std::chrono::system_clock::time_point mLastTime;
 		std::chrono::system_clock::time_point mCurrentTime;
+		float mDeltaTime;
+		
+		std::stack<Scene*> mScenes;
 	};
 }
