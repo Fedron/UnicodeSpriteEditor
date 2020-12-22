@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <stack>
+#include <string>
 #include <stdio.h>
 #include <assert.h>
 
@@ -14,6 +15,7 @@
 #include <WinUser.h>
 
 #include "Colour.h"
+#include "Input.h"
 
 namespace ce {
 	/**
@@ -41,32 +43,21 @@ namespace ce {
 		static void Create(std::wstring windowTitle, int width, int height);
 
 		/**
-		* Returns a reference to the instance of Console
-		* 
-		* @return reference to the instance of Console
-		*/
-		static Console& rGetInstance()
-		{
-			static Console instance;
-			return instance;
-		}
-
-		/**
-		* Returns the instance width of the Console
+		* Returns the width of the console
 		* 
 		* @return width of active Console
 		*/
-		const int GetWidth() const {
-			return mWidth;
+		static const int GetWidth() {
+			return rGetInstance().mWidth;
 		}
 
 		/**
-		* Returns the instance height of the Console
+		* Returns the height of the Console
 		* 
 		* @return height of active Console
 		*/
-		const int GetHeight() const {
-			return mHeight;
+		static const int GetHeight() {
+			return rGetInstance().mHeight;
 		}
 
 		/**
@@ -117,7 +108,7 @@ namespace ce {
 		/**
 		* Renders the screen buffer to the console and updates the console window title
 		*/
-		void Render();
+		static void Render();
 
 	private:
 		Console() :
@@ -131,6 +122,12 @@ namespace ce {
 		{}
 		~Console() {
 			delete[] mScreenBuf;
+		}
+
+		static Console& rGetInstance()
+		{
+			static Console instance;
+			return instance;
 		}
 
 		short mWidth;

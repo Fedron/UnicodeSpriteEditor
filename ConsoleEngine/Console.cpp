@@ -19,6 +19,12 @@ namespace ce {
 		SetConsoleMode(instance.mhConsoleInput,
 			ENABLE_EXTENDED_FLAGS | ~ENABLE_QUICK_EDIT_MODE);
 
+		// Disable console window resizing and maximising
+		HWND hwnd = GetConsoleWindow();
+		DWORD console_style = GetWindowLong(hwnd, GWL_STYLE);
+		console_style &= ~WS_MAXIMIZEBOX & ~WS_SIZEBOX;
+		SetWindowLong(hwnd, GWL_STYLE, console_style);
+
 		// Initialize the screen buffer
 		COORD coord = { instance.mWidth, instance.mHeight };
 		SetConsoleScreenBufferSize(instance.mhConsole, coord);
@@ -70,7 +76,7 @@ namespace ce {
 			}
 
 			for (int x = x1; x <= x2; x++) {
-				Draw(x, gradient * x, glyph, colour);
+				Draw(x, gradient * x + y1, glyph, colour);
 			}
 		}
 	}
@@ -89,15 +95,16 @@ namespace ce {
 
 	void Console::Render()
 	{
-		SetConsoleTitle(mWindowTitle.c_str());
+		Console& console = rGetInstance();
+
+		SetConsoleTitle(console.mWindowTitle.c_str());
 		WriteConsoleOutput(
-			mhConsole, mScreenBuf,
-			{ mWidth, mHeight }, { 0, 0 },
-			&mWindowRect
+			console.mhConsole, console.mScreenBuf,
+			{ console.mWidth, console.mHeight }, { 0, 0 },
+			& console.mWindowRect
 		);
 
 		// Clear screen buffer in preperation for the next render
-		memset(mScreenBuf, 0, sizeof(CHAR_INFO) * mWidth * mHeight);
+		memset(console.mScreenBuf, 0, sizeof(CHAR_INFO) * console.mWidth * console.mHeight);
 	}
-
 }

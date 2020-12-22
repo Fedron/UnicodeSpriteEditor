@@ -1,13 +1,10 @@
 #pragma once
-#include <Scene.h>
+#include "Scene.h"
+#include "SceneManager.h"
 
 class SpriteEditorScene :
-    public Scene
+    public ce::Scene
 {
-public:
-    SpriteEditorScene(std::stack<Scene*>& scenes) :
-        Scene(scenes) {}
-
 public:
     void CheckInputs();
     void Update();
