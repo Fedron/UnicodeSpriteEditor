@@ -95,14 +95,16 @@ namespace ce {
 
 	void Console::Render()
 	{
-		SetConsoleTitle(mWindowTitle.c_str());
+		Console& console = rGetInstance();
+
+		SetConsoleTitle(console.mWindowTitle.c_str());
 		WriteConsoleOutput(
-			mhConsole, mScreenBuf,
-			{ mWidth, mHeight }, { 0, 0 },
-			&mWindowRect
+			console.mhConsole, console.mScreenBuf,
+			{ console.mWidth, console.mHeight }, { 0, 0 },
+			& console.mWindowRect
 		);
 
 		// Clear screen buffer in preperation for the next render
-		memset(mScreenBuf, 0, sizeof(CHAR_INFO) * mWidth * mHeight);
+		memset(console.mScreenBuf, 0, sizeof(CHAR_INFO) * console.mWidth * console.mHeight);
 	}
 }

@@ -21,7 +21,13 @@ namespace ce {
 		*/
 		static void Update();
 
-		static KeyState GetKeyState(int key) {
+		/**
+		* Gets the state of a given key
+		* 
+		* @param key The virtual key-code of the key to get state for
+		* @return The state of the key (pressed, released, and held states)
+		*/
+		static const KeyState GetKeyState(int key) {
 			Input& input = rGetInstance();
 			return input.mKeys[key];
 		}

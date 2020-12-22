@@ -2,7 +2,8 @@
 #pragma warning( disable : 4244 )
 #include <chrono>
 #include "Console.h"
-#include "Scene.h"
+#include "SceneManager.h"
+#include "GameInfo.h"
 
 namespace ce {
 	/**
@@ -12,21 +13,12 @@ namespace ce {
 	{
 	public:
 		Game() {
-			mRunning = true;
-
-			mDeltaTime = 0.0f;
 			mCurrentTime = std::chrono::system_clock::now();
 			mLastTime = mCurrentTime;
 		}
-		~Game() {
-			for (int i = 0; i < mScenes.size(); i++) {
-				delete mScenes.top();
-				mScenes.pop();
-			}
-		}
 
-		void AddScene(Scene* scene) {
-			mScenes.push(scene);
+		~Game() {
+			SceneManager::Delete();
 		}
 
 		/**
@@ -38,38 +30,29 @@ namespace ce {
 		* - Console Render
 		*/
 		void Run() {
-			while (mRunning) {
-				if (mScenes.empty()) {
-					mRunning = false;
+			while (GameInfo::IsRunning()) {
+				if (SceneManager::IsEmpty()) {
+					GameInfo::ShouldQuit();
 					break;
 				}
 
 				// Calculate delta time
 				mCurrentTime = std::chrono::system_clock::now();
-				mDeltaTime = (mCurrentTime - mLastTime).count();
+				GameInfo::SetDeltaTime((mCurrentTime - mLastTime).count());
 				mLastTime = mCurrentTime;
 
 				Input::Update();
 
-				mScenes.top()->CheckInputs();
-				mScenes.top()->Update();
-				mScenes.top()->Draw();
+				SceneManager::TopScene().CheckInputs();
+				SceneManager::TopScene().Update();
+				SceneManager::TopScene().Draw();
 
-				ce::Console::rGetInstance().Render();
+				ce::Console::Render();
 			}
 		}
 
-		std::stack<Scene*>& rGetScenes() {
-			return mScenes;
-		}
-
 	private:
-		bool mRunning;
-
 		std::chrono::system_clock::time_point mLastTime;
 		std::chrono::system_clock::time_point mCurrentTime;
-		float mDeltaTime;
-		
-		std::stack<Scene*> mScenes;
 	};
 }

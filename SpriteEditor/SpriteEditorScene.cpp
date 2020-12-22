@@ -2,8 +2,8 @@
 
 void SpriteEditorScene::CheckInputs()
 {
-	if (GetAsyncKeyState(VK_ESCAPE)) {
-		mrScenes.pop();
+	if (ce::Input::GetKeyState(VK_ESCAPE).mPressed) {
+		ce::SceneManager::PopScene();
 		delete this;
 	}
 }

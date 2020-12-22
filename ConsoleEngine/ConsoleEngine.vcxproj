@@ -159,8 +159,10 @@
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
