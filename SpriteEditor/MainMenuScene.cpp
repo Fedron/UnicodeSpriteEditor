@@ -6,26 +6,23 @@ MainMenuScene::MainMenuScene(std::stack<Scene*>& scenes) :
 
 void MainMenuScene::CheckInputs()
 {
-	if (ce::Input::IsPressed(VK_UP)) {
-		OutputDebugString(L"Up");
-		OutputDebugString(L"\n");
-		//activeButton++;
-	} else if (ce::Input::IsPressed(VK_DOWN)) {
-		OutputDebugString(L"Down");
-		OutputDebugString(L"\n");
-		//activeButton--;
+	if (ce::Input::GetKeyState(VK_UP).mPressed) {
+		activeButton--;
+	}
+	else if (ce::Input::GetKeyState(VK_DOWN).mPressed) {
+		activeButton++;
 	}
 
 	// Clamp active button in the range of buttons[] and loop
-	//if (activeButton > 2)
-	//	activeButton = 0;
-	//else if (activeButton < 0)
-	//	activeButton = 2;
+	if (activeButton > 2)
+		activeButton = 0;
+	else if (activeButton < 0)
+		activeButton = 2;
 
-	//// Set selected button
-	//for (int i = 0; i < 2; i++) {
-	//	buttons[i]->mIsSelected = i == activeButton;
-	//}
+	// Set selected button
+	for (int i = 0; i <= 2; i++) {
+		buttons[i]->mIsSelected = i == activeButton;
+	}
 }
 
 void MainMenuScene::Update()
