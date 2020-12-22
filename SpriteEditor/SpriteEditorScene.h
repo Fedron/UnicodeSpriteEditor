@@ -2,7 +2,7 @@
 #include <Scene.h>
 
 class SpriteEditorScene :
-    public Scene
+    public ce::Scene
 {
 public:
     SpriteEditorScene(std::stack<Scene*>& scenes) :

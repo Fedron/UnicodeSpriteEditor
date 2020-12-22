@@ -49,6 +49,8 @@ namespace ce {
 				mDeltaTime = (mCurrentTime - mLastTime).count();
 				mLastTime = mCurrentTime;
 
+				Input::Update();
+
 				mScenes.top()->CheckInputs();
 				mScenes.top()->Update();
 				mScenes.top()->Draw();

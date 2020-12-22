@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <stack>
+#include <string>
 #include <stdio.h>
 #include <assert.h>
 
@@ -14,6 +15,7 @@
 #include <WinUser.h>
 
 #include "Colour.h"
+#include "Input.h"
 
 namespace ce {
 	/**
