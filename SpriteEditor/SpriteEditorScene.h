@@ -6,7 +6,9 @@ class SpriteEditorScene :
     public ce::Scene
 {
 public:
-    void CheckInputs();
-    void Update();
-    void Draw();
+    ~SpriteEditorScene() = default;
+	
+    void checkInputs() override;
+    void update() override;
+    void draw() override;
 };

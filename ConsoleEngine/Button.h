@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 #include "Console.h"
 
 namespace ce {
@@ -27,40 +26,43 @@ namespace ce {
 		* @param borderColour The colour of the border when the button
 		*	isn't selected (Default = ce::Colour::WHITE)
 		* @param borderActiveColour The colour of the border when the
-		*	button is selcted (Default = ce::Colour::YELLOW)
+		*	button is selected (Default = ce::Colour::YELLOW)
 		*/
-		Button(int x, int y, std::wstring text);
-		Button(int x, int y, std::wstring text,
+		Button(int x, int y, const std::wstring& text);
+		Button(int x, int y, const std::wstring& text,
 			Colour textColour, Colour textActiveColour);
-		Button(int x, int y, std::wstring text,
+		Button(int x, int y, const std::wstring& text,
 			Colour textColour, Colour textActiveColour,
 			short borderGlyph, int borderWidth, int paddingX, int paddingY);
-		Button(int x, int y, std::wstring text,
+		Button(int x, int y, const std::wstring& text,
 			Colour textColour, Colour textActiveColour,
 			short borderGlyph, int borderWidth, int paddingX, int paddingY,
 			Colour borderColour, Colour borderActiveColour);
 
 	public:
-		void Draw();
+		/**
+		 * Draws the button to the console
+		 */
+		void draw();
 
 	public:
 		bool mIsSelected;
 
 	private:
-		int mx;
-		int my;
-		int mWidth;
-		int mHeight;
+		int mx_;
+		int my_;
+		int mWidth_;
+		int mHeight_;
 
-		std::wstring mText;
-		Colour mTextColour;
-		Colour mTextActiveColour;
+		std::wstring mText_;
+		Colour mTextColour_;
+		Colour mTextActiveColour_;
 
-		short mBorderGlyph;
-		int mBorderWidth;
-		int mPaddingX;
-		int mPaddingY;
-		Colour mBorderColour;
-		Colour mBorderActiveColour;
+		short mBorderGlyph_;
+		int mBorderWidth_;
+		int mPaddingX_;
+		int mPaddingY_;
+		Colour mBorderColour_;
+		Colour mBorderActiveColour_;
 	};
 }

@@ -3,57 +3,61 @@
 MainMenuScene::~MainMenuScene()
 {
 	for (int i = 0; i <= 2; i++) {
-		delete buttons[i];
+		delete buttons_[i];
 	}
 }
 
-void MainMenuScene::CheckInputs()
+void MainMenuScene::checkInputs()
 {
-	if (ce::Input::GetKeyState(VK_UP).mPressed) {
-		activeButton--;
+	if (ce::Input::getKeyState(VK_UP).mPressed) {
+		activeButton_--;
 	}
-	else if (ce::Input::GetKeyState(VK_DOWN).mPressed) {
-		activeButton++;
+	else if (ce::Input::getKeyState(VK_DOWN).mPressed) {
+		activeButton_++;
 	}
 
 	// Clamp active button in the range of buttons[] and loop round
-	if (activeButton > 2)
-		activeButton = 0;
-	else if (activeButton < 0)
-		activeButton = 2;
+	if (activeButton_ > 2)
+		activeButton_ = 0;
+	else if (activeButton_ < 0)
+		activeButton_ = 2;
 
 	// Set selected button
 	for (int i = 0; i <= 2; i++) {
-		buttons[i]->mIsSelected = i == activeButton;
+		buttons_[i]->mIsSelected = i == activeButton_;
 	}
 
 	// Button click event
-	if (ce::Input::GetKeyState(VK_RETURN).mPressed) {
-		switch (activeButton) {
+	if (ce::Input::getKeyState(VK_RETURN).mPressed) {
+		switch (activeButton_) {
 		case 0: // "New Sprite" button
-			ce::SceneManager::AddScene(new SpriteEditorScene);
+			ce::SceneManager::addScene(new SpriteEditorScene);
 			break;
 		case 1: // "Load Sprite" button
-			ce::SceneManager::AddScene(new SpriteEditorScene);
+			ce::SceneManager::addScene(new SpriteEditorScene);
 			break;
 		case 2: // "Quit" button
-			ce::GameInfo::ShouldQuit();
+			ce::GameInfo::shouldQuit();
 			break;
 		}
 	}
+
+	// Alternate quit condition
+	if (ce::Input::getKeyState(VK_ESCAPE).mPressed)
+		ce::GameInfo::shouldQuit();
 }
 
-void MainMenuScene::Update()
+void MainMenuScene::update()
 {
 }
 
-void MainMenuScene::Draw()
+void MainMenuScene::draw()
 {
 	// TODO: Implement ASCII art title
-	ce::Console::DrawString(
-		(ce::Console::GetWidth() / 2) - 9, 2,
+	ce::Console::drawString(
+		(ce::Console::getWidth() / 2) - 9, 2,
 		L"Unicode Sprite Editor");
-	for (auto button : buttons) {
-		button->Draw();
+	for (auto* button : buttons_) {
+		button->draw();
 	}
 }

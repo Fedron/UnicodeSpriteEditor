@@ -4,36 +4,54 @@ namespace ce {
 	class GameInfo
 	{
 	public:
-		GameInfo(GameInfo const&) = delete;
-		void operator=(GameInfo const&) = delete;
-
-	public:
-		static void ShouldQuit() {
-			rGetInstance().mRunning = false;
+		GameInfo(const GameInfo&) = delete;
+		GameInfo& operator=(const GameInfo&) = delete;
+		GameInfo(GameInfo&&) = delete;
+		GameInfo& operator=(GameInfo&&) = delete;
+		
+		/**
+		 * Lets the game-loop know to quit once the current frame is finished rendering
+		 */
+		static void shouldQuit() {
+			getInstance().mRunning_ = false;
 		}
 
-		static bool IsRunning() {
-			return rGetInstance().mRunning;
+		/**
+		 * @return Returns whether or not the game-loop is running
+		 */
+		static bool isRunning() {
+			return getInstance().mRunning_;
 		}
 
-		static void SetDeltaTime(float dt) {
-			rGetInstance().mDeltaTime = dt;
+		/**
+		 * Updates the value of delta Time
+		 *
+		 * @param dt The new value of delta Time
+		 */
+		static void setDeltaTime(const float dt) {
+			getInstance().mDeltaTime_ = dt;
 		}
 
-		static const float GetDeltaTime() {
-			return rGetInstance().mDeltaTime;
+		/**
+		 * Gets the current delta time
+		 *
+		 * @return the current value of delta time
+		 */
+		static float getDeltaTime()
+		{
+			return getInstance().mDeltaTime_;
 		}
 
 	private:
 		GameInfo() = default;
+		~GameInfo() = default;
 
-		static GameInfo& rGetInstance() {
+		static GameInfo& getInstance() {
 			static GameInfo instance;
 			return instance;
 		}
-
-	private:
-		bool mRunning = true;
-		float mDeltaTime = 0.0f;
+		
+		bool mRunning_ = true;
+		float mDeltaTime_ = 0.0f;
 	};
 }

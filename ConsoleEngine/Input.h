@@ -12,14 +12,16 @@ namespace ce {
 		};
 
 	public:
-		Input(Input const&) = delete;
-		void operator=(Input const&) = delete;
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
+		Input(Input&&) = delete;
+		Input& operator=(Input&&) = delete;
 
 		/**
 		* Updates the states of the all the keys
 		* Called by default in the ce::Game::Run()
 		*/
-		static void Update();
+		static void update();
 
 		/**
 		* Gets the state of a given key
@@ -27,28 +29,29 @@ namespace ce {
 		* @param key The virtual key-code of the key to get state for
 		* @return The state of the key (pressed, released, and held states)
 		*/
-		static const KeyState GetKeyState(int key) {
-			Input& input = rGetInstance();
-			return input.mKeys[key];
+		static KeyState getKeyState(const int key)
+		{
+			Input& input = getInstance();
+			return input.mKeys_[key];
 		}
 
 	private:
 		Input() {
-			memset(mOldKeyStates, 0, 256 * sizeof(short));
-			memset(mNewKeyStates, 0, 256 * sizeof(short));
-			memset(mNewKeyStates, 0, 256 * sizeof(KeyState));
+			memset(mOldKeyStates_, 0, 256 * sizeof(short));
+			memset(mNewKeyStates_, 0, 256 * sizeof(short));
+			memset(mNewKeyStates_, 0, 256 * sizeof(KeyState));
 		}
 
-		static Input& rGetInstance()
+		static Input& getInstance()
 		{
 			static Input instance;
 			return instance;
 		}
 
 	private:
-		short mOldKeyStates[256];
-		short mNewKeyStates[256];
+		short mOldKeyStates_[256];
+		short mNewKeyStates_[256];
 
-		KeyState mKeys[256];
+		KeyState mKeys_[256];
 	};
 }

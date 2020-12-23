@@ -2,8 +2,9 @@
 #pragma warning( disable : 4244 )
 #include <chrono>
 #include "Console.h"
-#include "SceneManager.h"
 #include "GameInfo.h"
+#include "Input.h"
+#include "SceneManager.h"
 
 namespace ce {
 	/**
@@ -13,8 +14,8 @@ namespace ce {
 	{
 	public:
 		Game() {
-			mCurrentTime = std::chrono::system_clock::now();
-			mLastTime = mCurrentTime;
+			mCurrentTime_ = std::chrono::system_clock::now();
+			mLastTime_ = mCurrentTime_;
 		}
 
 		~Game() {
@@ -29,30 +30,31 @@ namespace ce {
 		* - Game Draw
 		* - Console Render
 		*/
-		void Run() {
-			while (GameInfo::IsRunning()) {
-				if (SceneManager::IsEmpty()) {
-					GameInfo::ShouldQuit();
+		void run() {
+			while (GameInfo::isRunning()) {
+				if (SceneManager::isEmpty()) {
+					GameInfo::shouldQuit();
 					break;
 				}
 
 				// Calculate delta time
-				mCurrentTime = std::chrono::system_clock::now();
-				GameInfo::SetDeltaTime((mCurrentTime - mLastTime).count());
-				mLastTime = mCurrentTime;
+				mCurrentTime_ = std::chrono::system_clock::now();
+				std::chrono::duration<float> elapsed_time = mCurrentTime_ - mLastTime_;
+				GameInfo::setDeltaTime(elapsed_time.count());
+				mLastTime_ = mCurrentTime_;
 
-				Input::Update();
+				Input::update();
 
-				SceneManager::TopScene().CheckInputs();
-				SceneManager::TopScene().Update();
-				SceneManager::TopScene().Draw();
+				SceneManager::topScene().checkInputs();
+				SceneManager::topScene().update();
+				SceneManager::topScene().draw();
 
-				ce::Console::Render();
+				ce::Console::render();
 			}
 		}
 
 	private:
-		std::chrono::system_clock::time_point mLastTime;
-		std::chrono::system_clock::time_point mCurrentTime;
+		std::chrono::system_clock::time_point mLastTime_;
+		std::chrono::system_clock::time_point mCurrentTime_;
 	};
 }

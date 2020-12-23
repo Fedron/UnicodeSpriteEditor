@@ -1,9 +1,6 @@
 #pragma once
-#include <iostream>
-#include <stack>
 #include <string>
-#include <stdio.h>
-#include <assert.h>
+#include <cassert>
 
 #ifndef UNICODE
 #define UNICODE
@@ -12,16 +9,16 @@
 #define _UNICODE
 #endif
 #include <Windows.h>
-#include <WinUser.h>
 
 #include "Colour.h"
-#include "Input.h"
+#include "GameInfo.h"
 
-namespace ce {
+namespace ce
+{
 	/**
 	* The Console class handles all the drawing to the console and rendering.
 	* It does not handle any game loops or timing, that has to be taken care of
-	* from a different class, this is purpely for drawing to the console.
+	* from a different class, this is purely for drawing to the console.
 	* 
 	* Console is a singleton and as a result only one object will exist for the
 	* lifetime of the application. If you need to "create a new instance" of Console
@@ -30,9 +27,11 @@ namespace ce {
 	class Console
 	{
 	public:
-		Console(Console const&) = delete;
-		void operator=(Console const&) = delete;
-
+		Console(const Console&) = delete;
+		Console& operator=(const Console&) = delete;
+		Console(Console&&) = delete;
+		Console& operator=(Console&&) = delete;
+		
 		/**
 		* Creates a new instance of Console to replace the existing instance
 		*
@@ -40,15 +39,16 @@ namespace ce {
 		* @param width Width of the console in columns
 		* @param height Height of the console in rows
 		*/
-		static void Create(std::wstring windowTitle, int width, int height);
+		static void create(const std::wstring& windowTitle, int width, int height);
 
 		/**
 		* Returns the width of the console
 		* 
 		* @return width of active Console
 		*/
-		static const int GetWidth() {
-			return rGetInstance().mWidth;
+		static int getWidth()
+		{
+			return getInstance().mWidth_;
 		}
 
 		/**
@@ -56,8 +56,9 @@ namespace ce {
 		* 
 		* @return height of active Console
 		*/
-		static const int GetHeight() {
-			return rGetInstance().mHeight;
+		static int getHeight()
+		{
+			return getInstance().mHeight_;
 		}
 
 		/**
@@ -66,17 +67,19 @@ namespace ce {
 		*
 		* @param x The x coordinate (or column) in which to draw
 		* @param y The y coordinate (or row) in which to draw
-		* @param value The unicode character to draw
+		* @param glyph The unicode character to draw
 		* @param colour The foreground colour of the unicode character
 		*/
-		static void Draw(int x, int y, short glyph) {
-			Draw(x, y, glyph, Colour::WHITE);
+		static void draw(const int x, const int y, const short glyph)
+		{
+			draw(x, y, glyph, Colour::WHITE);
 		}
-		static void Draw(int x, int y, short glyph, Colour colour);
+
+		static void draw(int x, int y, short glyph, Colour colour);
 
 		/**
-		* Draws a line between two points consisting of only the glpyh
-		* specified and one glpyh thick
+		* Draws a line between two points consisting of only the glyph
+		* specified and one glyph thick
 		* 
 		* @param x1 The starting x coordinate (or column) of the line
 		* @param y1 The starting y coordinate (or row) of the line
@@ -85,10 +88,15 @@ namespace ce {
 		* @param glyph The glyph to use
 		* @param colour The colour of the line
 		*/
-		static void DrawLine(int x1, int y1, int x2, int y2, short glyph) {
-			DrawLine(x1, y1, x2, y2, glyph, Colour::WHITE);
+		static void drawLine(const int x1, const int y1,
+			const int x2, const int y2,
+			const short glyph)
+		{
+			drawLine(x1, y1, x2, y2, glyph, Colour::WHITE);
 		}
-		static void DrawLine(int x1, int y1, int x2, int y2, short glyph, Colour colour);
+
+		static void drawLine(int x1, int y1,
+			int x2, int y2, short glyph, Colour colour);
 
 		/**
 		* Draws text to the screen buffer at the specified position, with the
@@ -99,44 +107,49 @@ namespace ce {
 		* @param text The string that will be drawn
 		* @param colour The foreground colour of the whole string
 		*/
-		static void DrawString(int x, int y, std::wstring text) {
-			DrawString(x, y, text, Colour::WHITE);
+		static void drawString(const int x, const int y, const std::wstring& text)
+		{
+			drawString(x, y, text, Colour::WHITE);
 		}
-		static void DrawString(int x, int y, std::wstring text, Colour colour);
+
+		static void drawString(int x, int y, std::wstring text, Colour colour);
 		// TODO: Add another signature that supports text justify relative to the x and y
 
 		/**
-		* Renders the screen buffer to the console and updates the console window title
+		* Renders the screen buffer to the console and updates the console window
+		* title
 		*/
-		static void Render();
+		static void render();
 
 	private:
 		Console() :
-			mWidth(120),
-			mHeight(30),
-			mWindowTitle(L"Console Engine"),
-			mScreenBuf(),
-			mhConsole(),
-			mhConsoleInput(),
-			mWindowRect()
-		{}
-		~Console() {
-			delete[] mScreenBuf;
+			mWidth_(120),
+			mHeight_(30),
+			mWindowTitle_(L"Console Engine"),
+			mScreenBuf_(),
+			mhConsole_(),
+			mhConsoleInput_(),
+			mWindowRect_()
+		{
 		}
 
-		static Console& rGetInstance()
+		~Console()
 		{
+			delete[] mScreenBuf_;
+		}
+
+		static Console& getInstance() {
 			static Console instance;
 			return instance;
 		}
 
-		short mWidth;
-		short mHeight;
-		std::wstring mWindowTitle;
+		short mWidth_;
+		short mHeight_;
+		std::wstring mWindowTitle_;
 
-		CHAR_INFO* mScreenBuf;
-		HANDLE mhConsole;
-		HANDLE mhConsoleInput;
-		SMALL_RECT mWindowRect;
+		CHAR_INFO* mScreenBuf_;
+		HANDLE mhConsole_;
+		HANDLE mhConsoleInput_;
+		SMALL_RECT mWindowRect_;
 	};
 }

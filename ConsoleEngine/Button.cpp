@@ -1,21 +1,22 @@
 #include "Button.h"
 
 namespace ce {
-	Button::Button(int x, int y, std::wstring text) :
+	Button::Button(const int x, const int y, const std::wstring& text) :
 		Button(x, y, text, Colour::WHITE, Colour::YELLOW)
 	{}
 
-	Button::Button(int x, int y, std::wstring text,
-		Colour textColour, Colour textActiveColour) :
+	Button::Button(const int x, const int y, const std::wstring& text,
+	               const Colour textColour, const Colour textActiveColour) :
 		Button(
 			x, y, text, textColour, textActiveColour,
 			L'\u2592', 1, 1, 1
 		)
 	{}
 
-	Button::Button(int x, int y, std::wstring text,
-		Colour textColour, Colour textActiveColour,
-		short borderGlyph, int borderWidth, int paddingX, int paddingY) :
+	Button::Button(const int x, const int y, const std::wstring& text,
+	               const Colour textColour, const Colour textActiveColour,
+	               const short borderGlyph, const int borderWidth,
+	               const int paddingX, const int paddingY) :
 		Button(
 			x, y, text, textColour, textActiveColour,
 			borderGlyph, borderWidth, paddingX, paddingY,
@@ -23,67 +24,68 @@ namespace ce {
 		)
 	{}
 
-	Button::Button(int x, int y, std::wstring text,
-		Colour textColour, Colour textActiveColour,
-		short borderGlyph, int borderWidth, int paddingX, int paddingY,
-		Colour borderColour, Colour borderActiveColour) :
-		mx(x), my(y), mText(text),
-		mTextColour(textColour), mTextActiveColour(textActiveColour),
-		mBorderGlyph(borderGlyph), mBorderWidth(borderWidth),
-		mPaddingX(paddingX), mPaddingY(paddingY),
-		mBorderColour(borderColour), mBorderActiveColour(borderActiveColour)
+	Button::Button(const int x, const int y, const std::wstring& text,
+	               const Colour textColour, const Colour textActiveColour,
+	               const short borderGlyph, const int borderWidth,
+	               const int paddingX, const int paddingY,
+	               const Colour borderColour, const Colour borderActiveColour) :
+		mx_(x), my_(y), mText_(text),
+		mTextColour_(textColour), mTextActiveColour_(textActiveColour),
+		mBorderGlyph_(borderGlyph), mBorderWidth_(borderWidth),
+		mPaddingX_(paddingX), mPaddingY_(paddingY),
+		mBorderColour_(borderColour), mBorderActiveColour_(borderActiveColour)
 	{
 		mIsSelected = false;
 
 		/*
 		* TODO: Add another constructor to allow the user to specify the width
-		* and height of the button. The text will then center align to fit the
+		* and height of the button. The text will then centre align to fit the
 		* dimensions
 		*/
 		#pragma warning ( suppress: 4267 26451 )
-		mWidth = (paddingX * 2) + text.size() + (borderWidth * 2);
-		mHeight = (paddingY * 2) + (borderWidth * 2) + 1;
+		mWidth_ = (paddingX * 2) + text.size() + (borderWidth * 2);
+		mHeight_ = (paddingY * 2) + (borderWidth * 2) + 1;
 	}
 
-	void Button::Draw()
+	void Button::draw()
 	{
 		// Draw the borders
-		for (int i = 0; i < mBorderWidth; i++) {
-			Console::DrawLine( // Top border
-				mx, my + i,
-				mx + mWidth - 1, my + i,
-				mBorderGlyph, mIsSelected ? mBorderActiveColour : mBorderColour
+		for (int i = 0; i < mBorderWidth_; i++) {
+			Console::drawLine( // Top border
+				mx_, my_ + i,
+				mx_ + mWidth_ - 1, my_ + i,
+				mBorderGlyph_, mIsSelected ? mBorderActiveColour_ : mBorderColour_
 			);
 		}
 		
-		for (int i = 0; i < mBorderWidth; i++) {
-			Console::DrawLine( // Right border
-				mx + mWidth - 1 - i, my,
-				mx + mWidth - 1 - i, my + mHeight - 1,
-				mBorderGlyph, mIsSelected ? mBorderActiveColour : mBorderColour
+		for (int i = 0; i < mBorderWidth_; i++) {
+			Console::drawLine( // Right border
+				mx_ + mWidth_ - 1 - i, my_,
+				mx_ + mWidth_ - 1 - i, my_ + mHeight_ - 1,
+				mBorderGlyph_, mIsSelected ? mBorderActiveColour_ : mBorderColour_
 			);
 		}
 
-		for (int i = 0; i < mBorderWidth; i++) {
-			Console::DrawLine( // Bottom border
-				mx, my + mHeight - 1 - i,
-				mx + mWidth - 1, my + mHeight - 1 - i,
-				mBorderGlyph, mIsSelected ? mBorderActiveColour : mBorderColour
+		for (int i = 0; i < mBorderWidth_; i++) {
+			Console::drawLine( // Bottom border
+				mx_, my_ + mHeight_ - 1 - i,
+				mx_ + mWidth_ - 1, my_ + mHeight_ - 1 - i,
+				mBorderGlyph_, mIsSelected ? mBorderActiveColour_ : mBorderColour_
 			);
 		}
 
-		for (int i = 0; i < mBorderWidth; i++) {
-			Console::DrawLine( // Left border
-				mx + i, my,
-				mx + i, my + mHeight - 1,
-				mBorderGlyph, mIsSelected ? mBorderActiveColour : mBorderColour
+		for (int i = 0; i < mBorderWidth_; i++) {
+			Console::drawLine( // Left border
+				mx_ + i, my_,
+				mx_ + i, my_ + mHeight_ - 1,
+				mBorderGlyph_, mIsSelected ? mBorderActiveColour_ : mBorderColour_
 			);
 		}
 
 		// Draw the text
-		Console::DrawString(
-			mx + mPaddingX + mBorderWidth, my + mPaddingY + mBorderWidth,
-			mText, mIsSelected ? mTextActiveColour : mTextColour
+		Console::drawString(
+			mx_ + mPaddingX_ + mBorderWidth_, my_ + mPaddingY_ + mBorderWidth_,
+			mText_, mIsSelected ? mTextActiveColour_ : mTextColour_
 		);
 	}
 }

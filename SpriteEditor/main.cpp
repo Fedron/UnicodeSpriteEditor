@@ -5,9 +5,9 @@
 
 int main()
 {
-    ce::Console::Create(L"Unicode Sprite Editor", 180, 50);
-    ce::Game* game = new ce::Game();
-    ce::SceneManager::AddScene(new MainMenuScene);
+    ce::Console::create(L"Unicode Sprite Editor", 180, 50);
+    auto* game = new ce::Game();
+    ce::SceneManager::addScene(new MainMenuScene);
 
-    game->Run();
+    game->run();
 }

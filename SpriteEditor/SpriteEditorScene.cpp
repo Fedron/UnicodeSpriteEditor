@@ -1,18 +1,18 @@
 #include "SpriteEditorScene.h"
 
-void SpriteEditorScene::CheckInputs()
+void SpriteEditorScene::checkInputs()
 {
-	if (ce::Input::GetKeyState(VK_ESCAPE).mPressed) {
-		ce::SceneManager::PopScene();
+	if (ce::Input::getKeyState(VK_ESCAPE).mPressed) {
+		ce::SceneManager::popScene();
 		delete this;
 	}
 }
 
-void SpriteEditorScene::Update()
+void SpriteEditorScene::update()
 {
 }
 
-void SpriteEditorScene::Draw()
+void SpriteEditorScene::draw()
 {
-	ce::Console::DrawString(1, 1, L"Sprite Editor");
+	ce::Console::drawString(1, 1, L"Sprite Editor");
 }
